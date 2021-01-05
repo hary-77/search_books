@@ -1,0 +1,266 @@
+import tkinter as tk
+import tkinter.font as tkFont
+import pandas as pd
+import sys
+from tkinter import*
+from tkinter import ttk
+from tkinter.font import Font
+def btn_click():
+        #最初の画面に戻る
+        def return_view():
+            app_new_csv.destroy()
+            
+        root = Tk()
+        root.title('検索結果')
+        root.minsize(700, 500)
+        root.columnconfigure(0, weight=1)
+        root.rowconfigure(0, weight=1)     
+        # Frame
+        frame1 = ttk.Frame(root, padding=10)
+        frame1.rowconfigure(1, weight=1)
+        frame1.columnconfigure(0, weight=1)
+        frame1.grid(sticky=(N, W, S, E))
+        frame1.place(x=0,y=15)
+
+       
+
+        input1=txt1.get()
+        input2=txt2.get()
+        input3=txt3.get()
+        
+        if var.get() == 0:
+            input4=["数学"]
+        if var.get() == 1:
+            input4=["物理学"]
+        if var.get() == 2:
+            input4=["英語"]
+        if var.get() == 3:
+            input4=["統計学"]
+        if var.get() == 4:
+            input4=["心理学"]
+        if var.get() == 5:
+            input4=["法律"]
+        if var.get() == 6:
+            input4=["教育"]
+        if var.get() == 7:
+            input4=["趣味"]
+        if var.get() == 8:
+            input4=["工学"]
+        if var.get() == 9:
+            input4=["データサイエンス"]
+        if var.get() == 10:
+            input4=["人工知能"]
+        if var.get() == 11:
+            input4=["プログラミング"]
+        if var.get() == 12:
+            input4=["プログラミング言語"]
+        if var.get() == 13:
+            input4=["ソフトウェア工学"]
+        if var.get() == 14:
+            input4=["プロジェクトマネジメント"]
+        if var.get() == 15:
+            input4=["コンピュータネットワーク"]
+        if var.get() == 16:
+            input4=[]        
+
+
+        la=[]     #代入リスト（タイトル）
+        lb=[]     #代入リスト（著者）
+        lc=[]     #代入リスト（出版社）
+        ld=[]     #代入リスト（タグ）
+
+
+
+
+                
+        for a in input1:                    #リスト生成
+            try:
+                la.extend(list(ti[a]))
+            except KeyError:
+                pass    
+        for b in input2:
+            try:
+                lb.extend(list(aut[b]))
+            except KeyError:
+                pass
+        for c in input3:
+            try:
+                lc.extend(list(pub[c]))
+            except KeyError:
+                pass
+        for d in input4:
+            try:
+                ld.extend(list(tag[d]))
+            except KeyError:
+                pass
+              
+        
+
+
+        if len(la)==0 and len(lb)==0 and len(lc)==0 and len(ld)==0:                                    #検索で一件もヒットしない場合の出力
+            print("入力内容: ","タイトル",input1," / 著者",input2," / 版社",input3," / タグ",input4,"\n")
+            print("＊Not Found\n　入力ミスがないか確認してください")
+            
+            f = Font(family='Helvetica', size=12)
+            v1 = StringVar()
+            txt = Text(frame1, height=20, width=60)
+            txt.configure(font=f)
+            txt.insert(1.0, "入力内容: "+"タイトル 『"+ input1 +"』 / 著者 『"+ txt2.get() +"』 / 出版社 『"+ txt3.get() +"』 / タグ 『 "+ input4+" 』 \n＊Not Found\n　入力ミスがないか確認してください")
+            txt.grid(row=1, column=0, sticky=(N, W, S, E))
+
+            
+    
+        else:                                                                                          #検索出力
+            print("入力内容: ","タイトル",input1," / 著者",input2," / 版社",input3," / タグ",input4,"\n")
+            
+            count=0                        #カウンター
+              
+            ra=set(la)                     #リスト型→セット型変換
+            rb=set(lb)
+            rc=set(lc)
+            rd=set(ld)
+
+            union=ra|rb|rc|rd              #和集合
+            listunion=list(union)
+    
+            for i in listunion:
+                count+=1
+                print(count,".",str(i))
+            print("\n\n検索ヒット数: ", str(len(union)), "件")
+               
+            f = Font(family='Helvetica', size=12)
+            v1 = StringVar()
+            txt = Text(frame1, height=20, width=60)
+            txt.configure(font=f)
+            txt.insert(1.0,"入力内容: "+"タイトル 『"+ txt1.get() +"』 / 著者 『"+ txt2.get() +"』 / 版社 『"+ txt3.get() +"』 \n")
+            txt.grid(row=1, column=0, sticky=(N, W, S, E))                
+
+
+
+
+
+        
+        # Scrollbar
+        scrollbar = ttk.Scrollbar(
+                    frame1,
+                        orient=VERTICAL,
+                            command=txt.yview)
+        txt['yscrollcommand'] = scrollbar.set
+        scrollbar.grid(row=1, column=1, sticky=(N, S))
+        
+    
+       
+            
+app = tk.Tk() 
+app.geometry("800x500")
+app.title("蔵書管理システム")
+back=tk.Canvas(bg="#EEEEEE",width=2000,height=1000)
+back.place(x=0,y=0)
+
+#ラベル
+fontStyle1 = tkFont.Font(size=45)
+lbl1 = tk.Label(text="蔵書検索", fg="Black", bg="#EEEEEE", font=fontStyle1)
+lbl1.place(x=35, y=20)
+
+fontStyle2 = tkFont.Font(size=20)
+lbl2 = tk.Label(text="タイトル ： ", fg="Black", bg="#EEEEEE", font=fontStyle2)
+lbl2.place(x=100, y=130)
+
+fontStyle3 = tkFont.Font(size=20)
+lbl3 = tk.Label(text="著者名  ： ", fg="Black", bg="#EEEEEE", font=fontStyle3)
+lbl3.place(x=100, y=160)
+
+fontStyle4 = tkFont.Font(size=20)
+lbl4 = tk.Label(text="出版社  ： ", fg="Black", bg="#EEEEEE", font=fontStyle4)
+lbl4.place(x=100, y=190)
+
+fontStyle5 = tkFont.Font(size=17)
+lbl5 = tk.Label(text="キーワード ： ", fg="Black", bg="#EEEEEE", font=fontStyle5)
+lbl5.place(x=100, y=250)
+
+#検索ボタン
+fontStyle6 = tkFont.Font(size=10)
+Button = tk.Button(app, text="検索", width=5, font=fontStyle6, command=btn_click)
+Button.place(x=340,y=430)
+
+#フレーム
+frame = tk.Frame(bg="#EEEEEE")
+frame.place(height=100,width=350,x=230,y=130)
+frame2 = tk.Frame(bg="#EEEEEE")
+frame2.place(height=150,width=75,x=230,y=250)
+frame3 = tk.Frame(bg="#EEEEEE")
+frame3.place(height=150,width=80,x=305,y=250)
+frame4 = tk.Frame(bg="#EEEEEE")
+frame4.place(height=150,width=100,x=385,y=250)
+frame5 = tk.Frame(bg="#EEEEEE")
+frame5.place(height=150,width=150,x=485,y=250)
+frame6 = tk.Frame(bg="#EEEEEE")
+frame6.place(height=150,width=150,x=630,y=250)
+
+#テキストボックス
+txt1 = tk.Entry(frame,width=50)
+txt1.grid(row=0, column=0, padx=10, pady=5, ipady=2)
+
+txt2 = tk.Entry(frame,width=50)
+txt2.grid(row=1, column=0, padx=10, pady=5, ipady=2)
+
+txt3 = tk.Entry(frame,width=50)
+txt3.grid(row=2, column=0, padx=10, pady=5, ipady=2)
+
+#ラジオボタン
+var=tk.IntVar()
+var.set(0)
+
+radio_0=tk.Radiobutton(frame2,value=0,variable=var,text="数学")
+radio_0.grid(row=3, column=0, padx=10, pady=2.5, ipady=2)
+
+radio_1=tk.Radiobutton(frame2,value=1,variable=var,text="教育")
+radio_1.grid(row=4, column=0, padx=10, pady=2.5, ipady=2)
+
+radio_2=tk.Radiobutton(frame2,value=2,variable=var,text="英語")
+radio_2.grid(row=5, column=0, padx=10, pady=2.5, ipady=2)
+
+radio_3=tk.Radiobutton(frame2,value=3,variable=var,text="法律")
+radio_3.grid(row=6, column=0, padx=10, pady=2.5, ipady=2)
+
+radio_4=tk.Radiobutton(frame3,value=4,variable=var,text="心理学")
+radio_4.grid(row=3, column=1, padx=10, pady=2.5, ipady=2)
+
+radio_5=tk.Radiobutton(frame3,value=5,variable=var,text="統計学")
+radio_5.grid(row=4, column=1, padx=10, pady=2.5, ipady=2)
+
+radio_6=tk.Radiobutton(frame3,value=6,variable=var,text="物理学")
+radio_6.grid(row=5, column=1, padx=10, pady=2.5, ipady=2)
+
+radio_7=tk.Radiobutton(frame3,value=7,variable=var,text="筋トレ  ")
+radio_7.grid(row=6, column=1, padx=10, pady=2.5, ipady=2)
+
+radio_8=tk.Radiobutton(frame4,value=8,variable=var,text="趣味　　　")
+radio_8.grid(row=3, column=2, padx=10, pady=2.5, ipady=2)
+
+radio_9=tk.Radiobutton(frame4,value=9,variable=var,text="工学　　　")
+radio_9.grid(row=4, column=2, padx=10, pady=2.5, ipady=2)
+
+radio_10=tk.Radiobutton(frame4,value=10,variable=var,text="人工知能　")
+radio_10.grid(row=5, column=2, padx=10, pady=2.5, ipady=2)
+
+radio_11=tk.Radiobutton(frame4,value=11,variable=var,text="プログラミング")
+radio_11.grid(row=6, column=2, padx=10, pady=2.5, ipady=2)
+
+radio_12=tk.Radiobutton(frame5,value=12,variable=var,text="データサイエンス             ")
+radio_12.grid(row=3, column=3, padx=10, pady=2.5, ipady=2)
+
+radio_13=tk.Radiobutton(frame5,value=13,variable=var,text="プログラミング言語         ")
+radio_13.grid(row=4, column=3, padx=10, pady=2.5, ipady=2)
+
+radio_14=tk.Radiobutton(frame5,value=14,variable=var,text="コンピューターネットワーク" )
+radio_14.grid(row=5, column=3, padx=10, pady=2.5, ipady=2)
+
+radio_15=tk.Radiobutton(frame5,value=15,variable=var,text="ソフトウェア工学            ")
+radio_15.grid(row=6, column=3, padx=10, pady=2.5, ipady=2)
+
+radio_16=tk.Radiobutton(frame6,value=16,variable=var,text="指定なし        ")
+radio_16.grid(row=3, column=4, padx=10, pady=2.5, ipady=2)
+
+
+app.mainloop()    
